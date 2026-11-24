@@ -1,0 +1,253 @@
+---
+import { Picture } from 'astro:assets';
+import '../styles/global.css';
+import { c, img, palette, L, base } from '../lib/client';
+import { icon } from '../lib/icons';
+import texture from '../assets/texture.jpg';
+import fInter from '../assets/fonts/Inter.woff2?url';
+import fSerif from '../assets/fonts/Fraunces.woff2?url';
+import fSerifI from '../assets/fonts/Fraunces-Italic.woff2?url';
+
+const p = palette();
+const vars = Object.entries({
+  '--bg': p.bg, '--surface': p.surface, '--ink': p.ink, '--muted': p.muted, '--accent': p.accent,
+  '--accent-t': p.accentText, '--accent-ts': p.accentTextSurf, '--btn': p.btn, '--btn-ink': p.btnInk,
+  '--tint': p.tint, '--line': p.line, '--tex': `url(${texture.src})`,
+  '--display': c.theme.display === 'serif' ? "'Fraunces', Georgia, serif" : "'Inter', system-ui, sans-serif",
+}).map(([k, v]) => `${k}:${v}`).join(';');
+const tel0 = c.contact.phones[0];
+const heroImg = img(c.hero.image);
+const introImg = img(c.intro?.image);
+const band = c.band ? img(c.band.image) : undefined;
+const hasWork = !!c.gallery?.items?.length;
+const full = `${c.name}: ${c.tradeLabel}. ${c.hero.lead}`;
+const desc = full.length <= 158 ? full : full.slice(0, 155).replace(/[\s,;:·-]+\S*$/, '') + '…';
+const year = new Date().getFullYear();
+---
+<!doctype html>
+<html lang={c.lang} data-mode={c.theme.mode} data-hero={c.theme.hero} style={vars}>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>{`${c.name} | ${c.tradeLabel}`}</title>
+<meta name="description" content={desc}>
+<meta name="theme-color" content={p.bg}>
+<link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`}>
+<link rel="preload" href={fInter} as="font" type="font/woff2" crossorigin>
+{c.theme.display === 'serif' && <link rel="preload" href={fSerif} as="font" type="font/woff2" crossorigin>}
+{c.theme.display === 'serif' && c.hero.titleEm && <link rel="preload" href={fSerifI} as="font" type="font/woff2" crossorigin>}
+<script is:inline>
+  // Reveal-on-scroll only when motion is allowed; content stays visible otherwise.
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) document.documentElement.classList.add('js');
+</script>
+</head>
+<body>
+<a class="skip" href="#main">{L.skip}</a>
+<header class="hd">
+  <div class="wrap hd-in">
+    <a class="brand" href="#top" aria-label={`${c.name}, ${L.top}`}><span class="mark" set:html={icon(c.trade, 20)} /><span>{c.name}</span></a>
+    <nav aria-label={L.menu}>
+      <ul>
+        <li><a href="#services">{L.services}</a></li>
+        {c.prices && <li><a href="#prices">{L.prices}</a></li>}
+        {hasWork && <li><a href="#work">{c.gallery?.label ?? L.work}</a></li>}
+        <li><a href="#steps">{L.steps}</a></li>
+        <li><a href="#contact">{L.contact}</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-sm" href={`tel:${tel0.tel}`} aria-label={`${L.call} ${tel0.display}`}><span set:html={icon('phone', 18)} /><span>{tel0.display}</span></a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="wrap hero-in">
+      <div class="hero-txt">
+        {c.hero.eyebrow && <p class="eyebrow">{c.hero.eyebrow}</p>}
+        <h1>{c.hero.title}{c.hero.titleEm && <> <em>{c.hero.titleEm}</em></>}</h1>
+        <p class="lead">{c.hero.lead}</p>
+        <div class="row">
+          <a class="btn" href={`tel:${tel0.tel}`}><span set:html={icon('phone', 20)} /><span>{L.call} {tel0.display}</span></a>
+          <a class="btn btn-ghost" href={`mailto:${c.contact.email}`}><span set:html={icon('mail', 20)} /><span>{L.write}</span></a>
+        </div>
+        {c.rating && !(c.theme.hero === 'type') && (
+          <p class="rating"><span class="stars" set:html={icon('star', 18, true)} /><strong>{c.rating.score}</strong><span>· {c.rating.count} {L.reviews} {c.rating.source}</span></p>
+        )}
+      </div>
+      {!heroImg && (
+        <aside class="hero-card" aria-label={c.rating ? `${L.rating} ${c.rating.score}` : L.contact}>
+          {c.rating && <>
+            <p class="hc-score"><span>{c.rating.score}</span><span class="hc-stars" set:html={icon('star', 26, true)} /></p>
+            <p class="hc-count">{c.rating.count} {L.reviews} {c.rating.source}</p>
+          </>}
+          <ul class="hc-list">
+            <li><span set:html={icon('phone', 18)} /><a href={`tel:${tel0.tel}`}>{tel0.display}</a></li>
+            <li><span set:html={icon('mail', 18)} /><a href={`mailto:${c.contact.email}`}>{c.contact.email}</a></li>
+            <li><span set:html={icon('pin', 18)} /><span>{c.contact.address.join(', ')}</span></li>
+          </ul>
+        </aside>
+      )}
+      {heroImg && (
+        <figure class="hero-pic">
+          <Picture src={heroImg} alt={c.hero.alt ?? ''} widths={[480, 720, Math.min(1100, heroImg.width)]} sizes="(min-width: 960px) 46vw, 100vw" formats={['avif', 'webp']} loading="eager" fetchpriority="high" style={c.hero.position ? `object-position:${c.hero.position}` : undefined} />
+        </figure>
+      )}
+    </div>
+  </section>
+
+  {c.intro && (
+    <section class="intro">
+      <div class={`wrap intro-in ${introImg ? 'has-img' : c.intro.facts ? 'has-facts' : ''}`}>
+        <div>
+          <h2 data-rv>{c.intro.title}</h2>
+          {c.intro.paragraphs.map((t) => <p data-rv>{t}</p>)}
+          {introImg && c.intro.facts && <ul class="facts">{c.intro.facts.map((f) => <li data-rv>{f}</li>)}</ul>}
+        </div>
+        {!introImg && c.intro.facts && <ul class="facts-big">{c.intro.facts.map((f, i) => <li data-rv style={`--i:${i}`}>{f}</li>)}</ul>}
+        {introImg && <figure class="intro-pic" data-rv><Picture src={introImg} alt={c.intro.alt ?? ''} widths={[420, Math.min(760, introImg.width)]} sizes="(min-width: 960px) 40vw, 100vw" formats={['avif', 'webp']} loading="lazy" /></figure>}
+      </div>
+    </section>
+  )}
+
+  <section class="services" id="services" aria-labelledby="h-services">
+    <div class="wrap">
+      <p class="kicker">{L.services}</p>
+      <h2 id="h-services" data-rv>{c.services.title}</h2>
+      {c.services.lead && <p class="sec-lead" data-rv>{c.services.lead}</p>}
+      <ul class="cards" data-n={c.services.items.length}>
+        {c.services.items.map((s, i) => (
+          <li class="card" data-rv style={`--i:${i % 4}`}>
+            <span class="card-ic" set:html={icon(c.trade, 24)} />
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+            {s.bullets && <ul class="ticks">{s.bullets.map((b) => <li>{b}</li>)}</ul>}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {c.prices && (
+    <section class="prices" id="prices" aria-labelledby="h-prices">
+      <div class="wrap">
+        <p class="kicker">{L.prices}</p>
+        <h2 id="h-prices" data-rv>{c.prices.title}</h2>
+        {c.prices.lead && <p class="sec-lead" data-rv>{c.prices.lead}</p>}
+        <div class="pgroups">
+          {c.prices.groups.map((g) => (
+            <div class="pgroup" data-rv>
+              <h3>{g.title}</h3>
+              <ul>{g.items.map((it) => <li><span class="pl"><span>{it.label}</span>{it.detail && <small>{it.detail}</small>}</span><span class="pp">{it.price}</span></li>)}</ul>
+            </div>
+          ))}
+        </div>
+        {c.prices.note && <p class="pnote">{c.prices.note}</p>}
+      </div>
+    </section>
+  )}
+
+  {band && c.band && (
+    <div class="band" data-rv><Picture src={band} alt={c.band.alt} widths={[640, Math.min(1600, band.width)]} sizes="100vw" formats={['avif', 'webp']} loading="lazy" /></div>
+  )}
+
+  {hasWork && c.gallery && (
+    <section class="work" id="work" aria-labelledby="h-work">
+      <div class="wrap">
+        <p class="kicker">{c.gallery?.label ?? L.work}</p>
+        <h2 id="h-work" data-rv>{c.gallery.title}</h2>
+        {c.gallery.lead && <p class="sec-lead" data-rv>{c.gallery.lead}</p>}
+        <ul class="grid">
+          {c.gallery.items.map((g, i) => { const m = img(g.image)!; return (
+            <li data-rv style={`--i:${i % 4}`}>
+              <figure>
+                <Picture src={m} alt={g.alt} widths={[360, Math.min(720, m.width), Math.min(1000, m.width)]} sizes={i === 0 ? '(min-width: 960px) 66vw, (min-width: 600px) 50vw, 100vw' : '(min-width: 960px) 30vw, (min-width: 600px) 50vw, 100vw'} formats={['avif', 'webp']} loading="lazy" />
+                {g.caption && <figcaption>{g.caption}</figcaption>}
+              </figure>
+            </li>
+          ); })}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <section class="steps" id="steps" aria-labelledby="h-steps">
+    <div class="wrap">
+      <p class="kicker">{L.steps}</p>
+      <h2 id="h-steps" data-rv>{c.steps.title}</h2>
+      <ol class="st">
+        {c.steps.items.map((s, i) => (
+          <li data-rv style={`--i:${i}`}><span class="num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><h3>{s.title}</h3><p>{s.text}</p></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="contact" id="contact" aria-labelledby="h-contact">
+    <div class="wrap">
+      <div class="ct" data-rv>
+        <div>
+          <p class="kicker">{L.contact}</p>
+          <h2 id="h-contact">{c.contact.title}</h2>
+          <p class="sec-lead">{c.contact.lead}</p>
+          <div class="row">
+            {c.contact.phones.map((ph, i) => (
+              <a class={i === 0 ? 'btn' : 'btn btn-ghost'} href={`tel:${ph.tel}`}><span set:html={icon('phone', 20)} /><span>{ph.label}: {ph.display}</span></a>
+            ))}
+          </div>
+        </div>
+        <dl class="ct-list">
+          <div><dt><span set:html={icon('mail', 20)} />{L.email}</dt><dd><a href={`mailto:${c.contact.email}`}>{c.contact.email}</a></dd></div>
+          <div><dt><span set:html={icon('pin', 20)} />{L.address}</dt><dd>{c.contact.address.map((a) => <span class="ln">{a}</span>)}</dd></div>
+          {c.contact.hours && <div><dt><span set:html={icon('clock', 20)} />{L.hours}</dt><dd>{c.contact.hours.map((a) => <span class="ln">{a}</span>)}</dd></div>}
+        </dl>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="ft">
+  <div class="wrap ft-in">
+    <div>
+      <p class="ft-name">{c.name}</p>
+      <p>{c.tradeLabel}</p>
+      {c.footer?.note && <p>{c.footer.note}</p>}
+    </div>
+    <div>
+      <p>{c.contact.address.join(', ')}</p>
+      <p><a href={`tel:${tel0.tel}`}>{tel0.display}</a> · <a href={`mailto:${c.contact.email}`}>{c.contact.email}</a></p>
+      <p>© {year} {c.name}</p>
+    </div>
+  </div>
+</footer>
+
+<nav class="mbar" aria-label={L.quick}>
+  <a href={`tel:${tel0.tel}`}><span set:html={icon('phone', 20)} />{L.call}</a>
+  <a href={`mailto:${c.contact.email}`}><span set:html={icon('mail', 20)} />{L.email}</a>
+</nav>
+<script>
+  // Mobile: the fixed bar steps aside (and is inert) while the hero's own Call/Email buttons are on screen,
+  // so it never covers them.
+  const bar = document.querySelector<HTMLElement>('.mbar');
+  const ctas = document.querySelector('.hero .row');
+  if (bar && ctas && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => {
+      const hide = e.isIntersecting;
+      bar.classList.toggle('hide', hide);
+      bar.toggleAttribute('inert', hide);
+      bar.setAttribute('aria-hidden', String(hide));
+    }).observe(ctas);
+  }
+</script>
+
+<script>
+  const d = document.documentElement;
+  if (d.classList.contains('js')) {
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -6% 0px', threshold: 0.1 });
+    document.querySelectorAll('[data-rv]').forEach((el) => io.observe(el));
+  }
+  const hd = document.querySelector('.hd'); let t = false;
+  addEventListener('scroll', () => { if (t) return; t = true; requestAnimationFrame(() => { hd?.classList.toggle('sm', scrollY > 30); t = false; }); }, { passive: true });
+</script>
+</body>
+</html>

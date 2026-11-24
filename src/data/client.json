@@ -1,0 +1,68 @@
+{
+  "lang": "fr",
+  "name": "Wicht Carrelage SA",
+  "initial": "W",
+  "trade": "tiler",
+  "tradeLabel": "Carreleurs, père et fils · Billens FR",
+  "theme": { "mode": "light", "accent": "#8a5a2b", "display": "serif", "hero": "split" },
+  "hero": {
+    "eyebrow": "Artisans carreleurs depuis 1982 · Billens",
+    "title": "L'art du carrelage,",
+    "titleEm": "transmis de père en fils.",
+    "lead": "Salles de bain, cuisines, sols, pierre naturelle. Chaque projet est étudié sur place et chiffré précisément. Fribourg et environs.",
+    "image": "salle-de-bain-pierre.jpg",
+    "alt": "Salle de bain en pierre naturelle avec double vasque noire et baignoire",
+    "position": "35% 50%"
+  },
+  "rating": { "score": "4,6", "count": 20, "source": "Google" },
+  "intro": {
+    "title": "Une famille, un métier",
+    "paragraphs": [
+      "Fondée en 1982, Wicht Carrelage SA a grandi avec une seule obsession : la qualité du travail, la précision du geste et le respect du client. Père et fils, nous travaillons côte à côte sur chaque chantier.",
+      "Entreprise formatrice, nous transmettons aussi notre passion aux apprentis carreleurs : expert aux examens pratiques, présidence de la commission d'apprentissage carrelage du canton de Fribourg, comité du Groupement fribourgeois des carreleurs (GFC), membre de la Fédération romande du carrelage (FERC)."
+    ],
+    "facts": ["Fondée en 1982", "Père et fils", "Entreprise formatrice", "Membre FERC"],
+    "image": "douche-italienne.jpg",
+    "alt": "Grande salle de bain sous poutres en bois avec douche italienne"
+  },
+  "services": {
+    "title": "Nos expertises",
+    "items": [
+      { "title": "Carrelage et faïence", "text": "Pose de tous types de carreaux : grès cérame, faïence, grands formats. Sols et murs, intérieur comme extérieur." },
+      { "title": "Pierre naturelle", "text": "Ardoise, pierre de parement, marbre, travertin." },
+      { "title": "Douches italiennes", "text": "Douches italiennes sur mesure : receveurs, parois, formes classiques ou courbes." },
+      { "title": "Rénovation complète", "text": "Salles de bain, cuisines, sols d'habitation : rénovation de A à Z, clé en main." },
+      { "title": "Mosaïque et créations", "text": "Mosaïque de verre, carreaux de ciment, motifs sur mesure." },
+      { "title": "Diagnostic amiante", "text": "Détection et gestion des matériaux dangereux, travaux de confinement, en collaboration avec des laboratoires certifiés (AJ Detect)." }
+    ]
+  },
+  "gallery": {
+    "title": "Quelques chantiers",
+    "items": [
+      { "image": "baignoire-angle.jpg", "alt": "Baignoire d'angle habillée de pierre et de bois" },
+      { "image": "vasques-jaunes.jpg", "alt": "Salle de bain avec vasques jaunes et sol à motifs" },
+      { "image": "chevron-vert.jpg", "alt": "Mur en carreaux verts posés en chevron, miroir rond rétroéclairé" },
+      { "image": "cuisine-metro.jpg", "alt": "Crédence de cuisine en carreaux métro rouges" },
+      { "image": "couloir-damier.jpg", "alt": "Couloir au sol en damier bleu, rouge et blanc" },
+      { "image": "mur-turquoise.jpg", "alt": "Baignoire devant un mur de carreaux turquoise artisanaux" }
+    ]
+  },
+  "steps": {
+    "title": "Votre projet",
+    "items": [
+      { "title": "Décrivez-nous votre projet", "text": "Par téléphone, par email ou via Instagram, @wicht_carrelage." },
+      { "title": "Étude sur place", "text": "Chaque projet est étudié sur place et chiffré précisément, sans engagement." },
+      { "title": "Le chantier", "text": "Père et fils, côte à côte, de la préparation aux finitions." }
+    ]
+  },
+  "contact": {
+    "title": "Demandez votre devis gratuit",
+    "lead": "Pas d'engagement, pas de surprise.",
+    "phones": [
+      { "label": "Bureau", "display": "026 652 80 47", "tel": "+41266528047" },
+      { "label": "Mobile", "display": "079 834 51 91", "tel": "+41798345191" }
+    ],
+    "email": "info@wicht-carrelage.ch",
+    "address": ["Route de Prévonloup 25", "1681 Billens"]
+  }
+}
